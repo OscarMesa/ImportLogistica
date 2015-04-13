@@ -32,8 +32,8 @@
         </ons-sliding-menu>
 
         <ons-modal var="modalLogin">
-                <ons-icon icon="ion-load-c" spin="true"></ons-icon>
-            </ons-modal>
+            <ons-icon icon="ion-load-c" spin="true"></ons-icon>
+        </ons-modal>
 
         <ons-modal var="LoginP" style="display: table;background: #FFF;">
 
@@ -57,6 +57,7 @@
                 <div class="left">
                     <ons-toolbar-button id="button_menu" ng-click="menuClik(this)">
                         <ons-icon icon="ion-navicon" size="28px" fixed-width="false"></ons-icon>
+                        Menú
                     </ons-toolbar-button>
                 </div>
                 <div class="center"><span id="Title_menu">Ingresar</span></div>
@@ -65,18 +66,25 @@
 
             
 
-            <div id="menu_select" style="text-align: center;">
+            <div id="datos_usuario" style="text-align: center;">
                 <br>
                 <ul class="list">
-                    <li class="list__item list__item--chevron" id="itemMI" ng-click="navi.pushPage('item1.html', {animation: 'lift'})">Ingreso de Mercancia</li>
-                    <li class="list__item list__item--chevron" id="itemMS" ng-click="navi.pushPage('item2.html', {animation: 'lift'})">Salida de mercancia</li>
-                    <li class="list__item list__item--chevron" id="itemCD" ng-click="navi.pushPage('item3.html', {animation: 'lift'})">Registros de los contenedores</li>
+                  <ons-list-header><ons-icon icon="ion-briefcase">&nbsp;&nbsp;&nbsp;Datos personales</ons-icon></ons-list-header>
+                  <li class="list__item list__item--tappable" >Nombre: <span id="Nombre"></span></li>
+                  <li class="list__item list__item--tappable" >Apellido: <span id="Apellido"></span></li>
+                  <li class="list__item list__item--tappable" >Celular: <span id="Celular"></span></li>
+                  <li class="list__item list__item--tappable" >Fijo: <span id="Fijo"></span></li>
+                  <li class="list__item list__item--tappable" >Email: <span id="Email"></span></li>
+                  <li class="list__item list__item--tappable" >Genero: <span id="Genero"></span></li>
+                  <li class="list__item list__item--tappable" >Ciudad: <span id="Ciudad"></span></li>
+                  <li class="list__item list__item--tappable" >DNI: <span id="DNI"></span></li>
                 </ul>
             </div>
             <div>
                 <img src="img/Container_Ship_Texas.jpg" style="width: 100%;" />
             </div>
-            
+
+
 
             <ons-modal var="clientesL">
                 <ons-icon icon="ion-load-c" spin="true"></ons-icon>
@@ -95,12 +103,27 @@
             <ons-toolbar modifier="transparent">
                 <div class="right">
                     <ons-toolbar-button class="menu-close" ng-click="menu.close()">
-                        </ons-icon>Cerrar
+                        </ons-icon>Inicio
                     </ons-toolbar-button>
                 </div>
             </ons-toolbar>
 
             <ons-list modifier="inset" class="settings-list">
+                <ons-list-item modifier="tappable" id="itemMI" ng-click="navi.pushPage('item1.html', {animation: 'lift'})">
+                    <ons-icon icon="ion-funnel"  style="opacity: 0.8" ></ons-icon>
+                    Ingreso de Mercancia
+                </ons-list-item>
+
+                <ons-list-item modifier="tappable" id="itemMS" ng-click="navi.pushPage('item2.html', {animation: 'lift'})">
+                    <ons-icon icon="ion-funnel"  style="opacity: 0.8" ></ons-icon>
+                    Salida de mercancia
+                </ons-list-item>
+
+                <ons-list-item modifier="tappable" id="itemCD" ng-click="navi.pushPage('item3.html', {animation: 'lift'})">
+                    <ons-icon icon="ion-funnel"  style="opacity: 0.8" ></ons-icon>
+                    Registros de los contenedores
+                </ons-list-item>
+
                 <ons-list-item modifier="tappable" ng-click="salirR(this)">
                     <ons-icon icon="ion-log-out"  style="opacity: 0.8" ></ons-icon>
                     Salir
@@ -110,7 +133,7 @@
             <ons-bottom-toolbar>
                 <ons-list class="bottom-menu-list">
                     <ons-list-item class="bottom-menu-item" ng-click="menu.close()">
-                        Menu
+                        Inicio
                     </ons-list-item>
                 </ons-list>
             </ons-bottom-toolbar>

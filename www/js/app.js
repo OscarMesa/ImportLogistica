@@ -1,7 +1,7 @@
-//var serviceUrl = 'http://localhost/base/service/';
-//var serviceLoginUrl = 'http://localhost/base/service/';
-var serviceLoginUrl = 'http://importlogistica.co/site/';
-var serviceUrl = "http://importlogistica.co/reportes/";
+var serviceUrl = 'http://localhost/base/service/';
+var serviceLoginUrl = 'http://localhost/base/service/';
+//var serviceLoginUrl = 'http://importlogistica.co/site/';
+//var serviceUrl = "http://importlogistica.co/reportes/";
 var user = new User();
 var module = ons.bootstrap();
 var myApp = angular.module('myApp', ['ui.select2']);
@@ -128,7 +128,7 @@ module.controller('AppCtrl', function ($scope) {
 
                     LoginP.hide();
 
-                    $("#Title_menu").text((user.cliente.Nombre==null ? "":user.cliente.Nombre) + " " + (user.cliente.Apellido==null?"":user.cliente.Apellido));
+                    $("#Title_menu").text("Inicio");
 
                     localStorage["user"] = user;
 
@@ -143,7 +143,23 @@ module.controller('AppCtrl', function ($scope) {
 
                     localStorage["user.idUser"] = user.idUser;
 
+                    localStorage["user.Celular"] = user.cliente.Celular;
+                    localStorage["user.Fijo"] = user.cliente.Fijo;
+                    localStorage["user.Email"] = user.cliente.Email;
+                    localStorage["user.Genero"] = user.cliente.Genero;
+                    localStorage["user.Ciudad"] = user.cliente.Ciudad;
+                    localStorage["user.DNI"] = user.cliente.DNI;
 
+
+                    $("#Nombre").text(user.cliente.Nombre == null ? "":user.cliente.Nombre);
+                    $("#Apellido").text(user.cliente.Apellido == null ? "":user.cliente.Apellido);
+                    $("#Celular").text(user.cliente.Celular == null ? "":user.cliente.Celular);
+                    $("#Fijo").text(user.cliente.Fijo == null ? "":user.cliente.Fijo);
+                    $("#Email").text(user.cliente.Email == null ? "":user.cliente.Email);
+                    $("#Genero").text(user.cliente.Genero == null ? "":(user.cliente.Genero == "M" ? "Masculino":"Femenino"));
+                    $("#Ciudad").text(user.cliente.Ciudad == null ? "":user.cliente.Ciudad);
+                    $("#DNI").text(user.cliente.DNI == null ? "":user.cliente.DNI);
+                    
                     $scope.username = "";
                     $scope.password = "";
                 } else {
@@ -182,7 +198,23 @@ module.controller('naviC', function($scope) {
             user.cliente.DNI = localStorage["user.DNI"];
             user.idUser = localStorage["user.idUser"];
 
-            $("#Title_menu").text((user.cliente.Nombre==null ? "":user.cliente.Nombre) + " " + (user.cliente.Apellido==null?"":user.cliente.Apellido));
+            user.cliente.Celular = localStorage["user.Celular"];
+            user.cliente.Fijo = localStorage["user.Fijo"];
+            user.cliente.Email = localStorage["user.Email"];
+            user.cliente.Genero = localStorage["user.Genero"];
+            user.cliente.Ciudad = localStorage["user.Ciudad"];
+            user.cliente.DNI = localStorage["user.DNI"];
+
+            $("#Nombre").text(user.cliente.Nombre == null ? "":user.cliente.Nombre);
+            $("#Apellido").text(user.cliente.Apellido == null ? "":user.cliente.Apellido);
+            $("#Celular").text(user.cliente.Celular == null ? "":user.cliente.Celular);
+            $("#Fijo").text(user.cliente.Fijo == null ? "":user.cliente.Fijo);
+            $("#Email").text(user.cliente.Email == null ? "":user.cliente.Email);
+            $("#Genero").text(user.cliente.Genero == null ? "":user.cliente.Genero);
+            $("#Ciudad").text(user.cliente.Ciudad == null ? "":user.cliente.Ciudad);
+            $("#DNI").text(user.cliente.DNI == null ? "":user.cliente.DNI);
+
+            $("#Title_menu").text("Inicio");
             if(!user.cliente.IngresoMercancia){
                 $("#itemMI").hide();
             };
