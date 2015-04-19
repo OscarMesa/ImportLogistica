@@ -159,7 +159,7 @@ module.controller('AppCtrl', function ($scope) {
                     $("#Genero").text(user.cliente.Genero == null ? "":(user.cliente.Genero == "M" ? "Masculino":"Femenino"));
                     $("#Ciudad").text(user.cliente.Ciudad == null ? "":user.cliente.Ciudad);
                     $("#DNI").text(user.cliente.DNI == null ? "":user.cliente.DNI);
-                    
+
                     $scope.username = "";
                     $scope.password = "";
                 } else {
@@ -228,8 +228,20 @@ module.controller('naviC', function($scope) {
     });
 });
 
-module.controller('item1', function($scope) {
+module.controller('item1', function($scope,$timeout) {
+
+
+
     ons.ready(function() {
+
+        $scope.populateList = function() {
+            console.log("scroll");
+        }
+         
+        $scope.canWeLoadMoreContent = function() {
+            return false;
+        }  
+
         $(".js-example-basic-multiple").select2();
         if (!user.cliente.buscarClientes) {
             $("#clientesMI").hide();
@@ -320,9 +332,6 @@ module.controller('item1', function($scope) {
                             arrayResult[i] = msg[i];
                         }
 
-                        listHtml += '<ons-list-footer style="text-align: center;"><div id="paginacion">'+paginacion(msg)+'</div></ons-list-footer>';
-
-
                         angular.element(document.getElementById('listMI')).empty();
                         angular.element(document.getElementById('listMI')).append(listHtml);
                         ons.$compile(angular.element(document.getElementById('listMI')))($scope);
@@ -341,47 +350,8 @@ module.controller('item1', function($scope) {
             }
         }
 
-
     });
 
-
-    function paginacion (argument) {
-        var pagina = "";
-        var paginaA = parseInt(argument.paginacion.pagina);
-
-        if (paginaA == 1 & paginaA == argument.paginacion.totalPaginas) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,1)"> 1 </button>';
-        };
-
-        if (paginaA == 1 & paginaA !== argument.paginacion.totalPaginas) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,1)"> 1 </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')">'+ (paginaA +1) +'</button>';
-
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')"> > </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(argument.paginacion.totalPaginas)+')"> >> </button>';
-        };
-
-        if (paginaA !== 1 & paginaA < argument.paginacion.totalPaginas) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,1)"> << </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1 == 0 ? 1:paginaA-1)+')"> < </button>';
-
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1)+')">'+(paginaA-1)+'</button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA)+')">'+paginaA+'</button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')">'+ (paginaA +1) +'</button>';
-        
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')"> > </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(argument.paginacion.totalPaginas)+')"> >> </button>';
-        };
-
-        if (paginaA !== 1 & paginaA == argument.paginacion.totalPaginas & argument.paginacion.totalPaginas !== 0) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,1)"> << </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1 == 0 ? 1:paginaA-1)+')"> < </button>';
-
-            pagina += '<button style="font-size: 30px;margin: 5px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1)+')">'+(paginaA-1)+'</button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA)+')">'+paginaA+'</button>';
-        };
-        return pagina;
-    }
 });
 
 module.controller('item2', function($scope) {
@@ -474,9 +444,6 @@ module.controller('item2', function($scope) {
                             arrayResult[i] = msg[i];
                         }
 
-                        listHtml += '<ons-list-footer style="text-align: center;"><div id="paginacion">'+paginacion(msg)+'</div></ons-list-footer>';
-
-
                         angular.element(document.getElementById('listSM')).empty();
                         angular.element(document.getElementById('listSM')).append(listHtml);
                         ons.$compile(angular.element(document.getElementById('listSM')))($scope);
@@ -495,44 +462,6 @@ module.controller('item2', function($scope) {
         }
     });
 
-    
-    function paginacion (argument) {
-        var pagina = "";
-        var paginaA = parseInt(argument.paginacion.pagina);
-
-        if (paginaA == 1 & paginaA == argument.paginacion.totalPaginas) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,1)"> 1 </button>';
-        };
-
-        if (paginaA == 1 & paginaA !== argument.paginacion.totalPaginas) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,1)"> 1 </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')">'+ (paginaA +1) +'</button>';
-
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')"> > </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(argument.paginacion.totalPaginas)+')"> >> </button>';
-        };
-
-        if (paginaA !== 1 & paginaA < argument.paginacion.totalPaginas) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,1)"> << </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1 == 0 ? 1:paginaA-1)+')"> < </button>';
-
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1)+')">'+(paginaA-1)+'</button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA)+')">'+paginaA+'</button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')">'+ (paginaA +1) +'</button>';
-        
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA+1)+')"> > </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(argument.paginacion.totalPaginas)+')"> >> </button>';
-        };
-
-        if (paginaA !== 1 & paginaA == argument.paginacion.totalPaginas & argument.paginacion.totalPaginas !== 0) {
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,1)"> << </button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1 == 0 ? 1:paginaA-1)+')"> < </button>';
-
-            pagina += '<button style="font-size: 30px;margin: 5px;margin: 5px;" class="button button--cta" ng-click="buscar(this,'+(paginaA-1)+')">'+(paginaA-1)+'</button>';
-            pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA)+')">'+paginaA+'</button>';
-        };
-        return pagina;
-    }
 });
 
 module.controller('item3', function($scope) {
@@ -638,7 +567,7 @@ module.controller('item3', function($scope) {
                             arrayResult[i] = msg[i];
                         }
 
-                        listHtml += '<ons-list-footer style="text-align: center;"><div id="paginacion">'+paginacion(msg)+'</div></ons-list-footer>';
+                        //listHtml += '<ons-list-footer style="text-align: center;"><div id="paginacion">'+paginacion(msg)+'</div></ons-list-footer>';
 
 
                         angular.element(document.getElementById('listCD')).empty();
@@ -659,7 +588,7 @@ module.controller('item3', function($scope) {
 
     });
     
-    function paginacion (argument) {
+    /*function paginacion (argument) {
         var pagina = "";
         var paginaA = parseInt(argument.paginacion.pagina);
 
@@ -695,7 +624,7 @@ module.controller('item3', function($scope) {
             pagina += '<button style="font-size: 30px;margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA)+')">'+paginaA+'</button>';
         };
         return pagina;
-    }
+    }*/
 });
 
 ons.ready(function () {

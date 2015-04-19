@@ -37,7 +37,9 @@
 
         <ons-modal var="LoginP" style="display: table;background: #FFF;">
 
-                <div class="logo"><h2>Ingresar</h2></div>
+                
+                <img src="img/logo.jpg" />
+                <div class="logo"><h3>Ingresar</h3></div>
                 <div id="login" class="login-form">
                   <input type="text" placeholder="Usuario" id="username" data-ng-model="username" class="text-input--underbar" />
 
@@ -45,7 +47,7 @@
                   <br><br>
                   <ons-button modifier="large" class="login-button" ng-click="ingresar(this)">Ingresar</ons-button>
                 </div>
-                <img src="img/logo.jpg" />
+               
             </ons-modal>
         </ons-page>
     </ons-navigator>
@@ -142,16 +144,17 @@
     </ons-template>
 
 
-    <ons-template id="item1.html">
-     <ons-page  ng-controller="item1">
+    <ons-template id="item1.html" >
+     <ons-page ng-controller="item1" >
+     
         <ons-toolbar>
             <div class="left"><ons-back-button>Atras</ons-back-button></div>
             <div class="center">Ingreso de Mercancia</div>
             <div class="right"></div> 
         </ons-toolbar>
 
-        <div style="text-align: center">
-
+        <div style="text-align: center;" id="contentScroll">
+            
             <ul class="list">
                 <li class="list__item list__item--tappable" style="text-align: center;">
                     <span class="toolbar-button--quiet navigation-bar__line-height">Fecha Inicio </span>
@@ -170,12 +173,18 @@
             </ul>
 
             <button class="button button--large" ng-click="buscarMI(this)">Buscar</button>
-            <ons-modal var="modalMI">
+
+            <ons-modal var="modalMI" >
                 <ons-icon icon="ion-load-c" spin="true"></ons-icon>
             </ons-modal>
-            <ons-list class="list" id="listMI" >
-                
-            </ons-list>
+            <ons-scroller infinit-scroll-enable="false" can-load="true" on-scrolled="populateList()" threshold="20" style="height:100%">
+                <ons-list class="list" id="listMI">
+                    
+
+                    
+                </ons-list>
+            </ons-scroller>
+
             <ons-modal var="DetalleItem1">
               <div class="login-form">
                 <ul class="list">
@@ -191,11 +200,14 @@
                 </ul>
               </div>
             </ons-modal>
+
+            
         </div>
 
         <ons-bottom-toolbar>
             <div class="bottom-bar__line-height" style="text-align: center;">ImportLogistica</div>
         </ons-bottom-toolbar>
+
         </ons-page>
     </ons-template>
 
