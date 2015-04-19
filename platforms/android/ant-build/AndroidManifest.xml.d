@@ -1,2 +1,2 @@
-/home/andrea/ImportLogistica/platforms/android/ant-build/AndroidManifest.xml : \
-/home/andrea/ImportLogistica/platforms/android/AndroidManifest.xml \
+c:\PhonegapApps\ImportLogistica\platforms\android\ant-build\AndroidManifest.xml : \
+c:\PhonegapApps\ImportLogistica\platforms\android\AndroidManifest.xml \
