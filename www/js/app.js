@@ -1,10 +1,10 @@
-var serviceUrl = 'http://localhost/base/service/';
-var serviceLoginUrl = 'http://localhost/base/service/';
-//var serviceLoginUrl = 'http://importlogistica.co/site/';
-//var serviceUrl = "http://importlogistica.co/reportes/";
+//var serviceUrl = 'http://localhost/base/service/';
+//var serviceLoginUrl = 'http://localhost/base/service/';
+var serviceLoginUrl = 'http://importlogistica.co/site/';
+var serviceUrl = "http://importlogistica.co/reportes/";
 var user = new User();
 var module = ons.bootstrap();
-var myApp = angular.module('myApp', ['ui.select2']);
+var myApp = angular.module('myApp', ['ui.select2'],['infinite-scroll']);
 
 module.controller('AppCtrl', function ($scope) {
 
@@ -149,6 +149,7 @@ module.controller('AppCtrl', function ($scope) {
                     localStorage["user.Genero"] = user.cliente.Genero;
                     localStorage["user.Ciudad"] = user.cliente.Ciudad;
                     localStorage["user.DNI"] = user.cliente.DNI;
+                    localStorage["user.buscarClientes"] = user.cliente.buscarClientes;
 
 
                     $("#Nombre").text(user.cliente.Nombre == null ? "":user.cliente.Nombre);
@@ -204,15 +205,16 @@ module.controller('naviC', function($scope) {
             user.cliente.Genero = localStorage["user.Genero"];
             user.cliente.Ciudad = localStorage["user.Ciudad"];
             user.cliente.DNI = localStorage["user.DNI"];
+            user.cliente.buscarClientes = localStorage["user.buscarClientes"] == "true" ? true : false;
 
-            $("#Nombre").text(user.cliente.Nombre == null ? "":user.cliente.Nombre);
-            $("#Apellido").text(user.cliente.Apellido == null ? "":user.cliente.Apellido);
-            $("#Celular").text(user.cliente.Celular == null ? "":user.cliente.Celular);
-            $("#Fijo").text(user.cliente.Fijo == null ? "":user.cliente.Fijo);
-            $("#Email").text(user.cliente.Email == null ? "":user.cliente.Email);
-            $("#Genero").text(user.cliente.Genero == null ? "":user.cliente.Genero);
-            $("#Ciudad").text(user.cliente.Ciudad == null ? "":user.cliente.Ciudad);
-            $("#DNI").text(user.cliente.DNI == null ? "":user.cliente.DNI);
+            $("#Nombre").text(user.cliente.Nombre == null || user.cliente.Nombre == "null"? "":user.cliente.Nombre);
+            $("#Apellido").text(user.cliente.Apellido == null || user.cliente.Apellido == "null"? "":user.cliente.Apellido);
+            $("#Celular").text(user.cliente.Celular == null || user.cliente.Celular == "null"? "":user.cliente.Celular);
+            $("#Fijo").text(user.cliente.Fijo == null || user.cliente.Fijo == "null"? "":user.cliente.Fijo);
+            $("#Email").text(user.cliente.Email == null || user.cliente.Email == "null"? "":user.cliente.Email);
+            $("#Genero").text(user.cliente.Genero == null || user.cliente.Genero == "null"? "":user.cliente.Genero);
+            $("#Ciudad").text(user.cliente.Ciudad == null || user.cliente.Ciudad == "null"? "":user.cliente.Ciudad);
+            $("#DNI").text(user.cliente.DNI == null || user.cliente.DNI == "null"? "":user.cliente.DNI);
 
             $("#Title_menu").text("Inicio");
             if(!user.cliente.IngresoMercancia){
@@ -228,19 +230,10 @@ module.controller('naviC', function($scope) {
     });
 });
 
+
 module.controller('item1', function($scope,$timeout) {
 
-
-
     ons.ready(function() {
-
-        $scope.populateList = function() {
-            console.log("scroll");
-        }
-         
-        $scope.canWeLoadMoreContent = function() {
-            return false;
-        }  
 
         $(".js-example-basic-multiple").select2();
         if (!user.cliente.buscarClientes) {
@@ -274,10 +267,10 @@ module.controller('item1', function($scope,$timeout) {
         };
 
         $scope.buscarMI = function ($scope) {
-            $scope.buscar ($scope,1);
+            $scope.buscar ($scope,1,true);
         };
 
-        $scope.buscar =  function ($scope,pagina) {
+        $scope.buscar =  function ($scope,pagina,isEmpty) {
             function pad(s) {
                 return (s < 10) ? '0' + s : s;
             }
@@ -322,17 +315,27 @@ module.controller('item1', function($scope,$timeout) {
                     modalMI.hide();
                     if (msg.status == '200') {
                         var arrayResult = new Array();
-                        var listHtml = '<ons-list-header>Resultados</ons-list-header>';
+                        var listHtml = '';
                         for (var i = 0; i < msg.num_registros-1; i++) {
                             if (!user.cliente.buscarClientes) {
-                                listHtml += '<ons-list-item class="list__item list__item--chevron" ng-click="selectMI(this, '+i+')"> Fecha Ingreso: '+msg[i].FechaIngreso+'</ons-list-item>';
+                                listHtml += '<ons-list-item  class="list__item list__item--chevron" ng-click="selectMI(this, '+i+')"> Fecha Ingreso: '+msg[i].FechaIngreso+'</ons-list-item >';
                             }else{
-                                listHtml += '<ons-list-item class="list__item list__item--chevron" ng-click="selectMI(this, '+i+')"> Cliente: '+msg[i].Cliente+' Fecha Ingreso: '+msg[i].FechaIngreso+'</ons-list-item>';
+                                listHtml += '<ons-list-item  class="list__item list__item--chevron" ng-click="selectMI(this, '+i+')"> Cliente: '+msg[i].Cliente+' Fecha Ingreso: '+msg[i].FechaIngreso+'</ons-list-item >';
                             }
                             arrayResult[i] = msg[i];
                         }
 
-                        angular.element(document.getElementById('listMI')).empty();
+                        var paginaA = parseInt(msg.paginacion.pagina);
+                        angular.element(document.getElementById('footerPaginaMI')).remove();
+                        if (paginaA !== msg.paginacion.totalPaginas) {
+                            
+                            listHtml += '<ons-list-footer id="footerPaginaMI"  style="text-align: left;"><div id="paginacion"><button style="margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA+1)+',false)"> Ver mas.. </button></div></ons-list-footer>';
+                        };
+                        
+                        if (isEmpty) {
+                            angular.element(document.getElementById('listMI')).empty();
+                        };
+                        
                         angular.element(document.getElementById('listMI')).append(listHtml);
                         ons.$compile(angular.element(document.getElementById('listMI')))($scope);
                         user.listIngresoDeMercancia.list = arrayResult;
@@ -388,10 +391,10 @@ module.controller('item2', function($scope) {
         };
 
         $scope.buscarSM = function ($scope) {
-            $scope.buscar($scope,1);
+            $scope.buscar($scope,1,true);
         };
 
-        $scope.buscar = function ($scope,pagina) {
+        $scope.buscar = function ($scope,pagina,isEmpty) {
            function pad(s) {
                 return (s < 10) ? '0' + s : s;
             }
@@ -434,7 +437,7 @@ module.controller('item2', function($scope) {
                     modalMS.hide();
                     if (msg.status == '200') {
                         var arrayResult = new Array();
-                        var listHtml = '<ons-list-header>Resultados</ons-list-header>';
+                        var listHtml = '';
                         for (var i = 0; i < msg.num_registros-1; i++) {
                             if (!user.cliente.buscarClientes) {
                                 listHtml += '<ons-list-item class="list__item list__item--chevron" ng-click="selectSM(this, '+i+')"> Fecha envio: '+msg[i].FechaEnvio+'</ons-list-item>';
@@ -443,8 +446,16 @@ module.controller('item2', function($scope) {
                             }
                             arrayResult[i] = msg[i];
                         }
-
-                        angular.element(document.getElementById('listSM')).empty();
+                        var paginaA = parseInt(msg.paginacion.pagina);
+                        angular.element(document.getElementById('footerPaginaSM')).remove();
+                        if (paginaA !== msg.paginacion.totalPaginas) {
+                            
+                            listHtml += '<ons-list-footer id="footerPaginaSM"  style="text-align: left;"><div id="paginacion"><button style="margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA+1)+',false)"> Ver mas.. </button></div></ons-list-footer>';
+                        };
+                        
+                        if (isEmpty) {
+                            angular.element(document.getElementById('listSM')).empty();
+                        };
                         angular.element(document.getElementById('listSM')).append(listHtml);
                         ons.$compile(angular.element(document.getElementById('listSM')))($scope);
                         user.listSalidaDeMercancia.list = arrayResult;
@@ -513,10 +524,10 @@ module.controller('item3', function($scope) {
         };
 
         $scope.buscarCD = function ($scope) {
-            $scope.buscar($scope,1);
+            $scope.buscar($scope,1,true);
         };
 
-        $scope.buscar = function ($scope,pagina) {
+        $scope.buscar = function ($scope,pagina,isEmpty) {
             function pad(s) {
                 return (s < 10) ? '0' + s : s;
             }
@@ -557,7 +568,7 @@ module.controller('item3', function($scope) {
                     modalCD.hide();
                     if (msg.status == '200') {
                         var arrayResult = new Array();
-                        var listHtml = '<ons-list-header>Resultados</ons-list-header>';
+                        var listHtml = '';
                         for (var i = 0; i < msg.num_registros-1; i++) {
                             if (!user.cliente.buscarClientes) {
                                 listHtml += '<ons-list-item class="list__item list__item--chevron" ng-click="selectCD(this, '+i+')">Fecha ingreso: '+msg[i].FechaIngreso+'</ons-list-item>';
@@ -567,10 +578,16 @@ module.controller('item3', function($scope) {
                             arrayResult[i] = msg[i];
                         }
 
-                        //listHtml += '<ons-list-footer style="text-align: center;"><div id="paginacion">'+paginacion(msg)+'</div></ons-list-footer>';
-
-
-                        angular.element(document.getElementById('listCD')).empty();
+                        var paginaA = parseInt(msg.paginacion.pagina);
+                        angular.element(document.getElementById('footerPaginaCD')).remove();
+                        if (paginaA !== msg.paginacion.totalPaginas) {
+                            
+                            listHtml += '<ons-list-footer id="footerPaginaCD"  style="text-align: left;"><div id="paginacion"><button style="margin: 5px;" class="button button--outline" ng-click="buscar(this,'+(paginaA+1)+',false)"> Ver mas.. </button></div></ons-list-footer>';
+                        };
+                        
+                        if (isEmpty) {
+                            angular.element(document.getElementById('listCD')).empty();
+                        };
                         angular.element(document.getElementById('listCD')).append(listHtml);
                         ons.$compile(angular.element(document.getElementById('listCD')))($scope);
                         user.listContenedores.list = arrayResult;
